@@ -1,0 +1,33 @@
+---
+title: "loinc_00_prep_terms.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+## Load Loinc Table
+
+```{r}
+loinc <- read_csv("scratch/Loinc.csv", guess_max = 100000)
+```
+
+```{r}
+loinc %>%
+    filter(STATUS == "ACTIVE") %>%
+    select(LOINC_NUM, COMPONENT, SHORTNAME, LONG_COMMON_NAME, CLASS, DisplayName) %>%
+    clean_names ->
+    loinc_2
+```
+
+```{r}
+loinc_2 %>%
+    sample_n(100)
+```
+
