@@ -1,21 +1,27 @@
-import urllib.request, urllib.error, urllib.parse
+# Imports ######################################################################
 import json
-import os
-from pprint import pprint
+import pysolr
+import requests
+import scispacy
 
+# Functions ####################################################################
+def post_annotate(text, api_key, ontology="LOINC"):
+    url = "http://data.bioontology.org/annotator?ontologies" + ontology
+    data = {'apikey':api_key, 'text':text}
+    res = requests.post(url, data = data)
+    return json.loads(res.text)
+    
+
+# Constants #################################################################### 
 API_KEY = "33e71ab2-159a-4a13-82f6-0ed8ff73ca9f"
 
-def get_json(url):
-    opener = urllib.request.build_opener()
-    opener.addheaders = [('Authorization', 'apikey token=' + API_KEY)]
-    return json.loads(opener.open(url).read())
-
-def annotate(text, rest_url = "http://data.bioontology.org", ontology = "LOINC"):
-    text_parsed = urllib.parse.quote(text)
-    result = get_json(rest_url + "/annotator?text=" + text_parsed + "&ontologies=" + ontology)
-    return(result)
-
+# Main #########################################################################
 text = "Melanoma is a malignant tumor of melanocytes which are found predominantly in skin but also in the bowel and the eye."
-res = annotate(text)
+#res = annotate(text)
 
-res
+solr = pysolr.Solr('http://192.168.1.36:8983/solr/')
+result = solr.search('full_text:coronavirus')
+txt = [r['full_text'] for r in result]
+txt_0 = txt[0][0]
+
+X = post_annotate(txt_0, API_KEY)

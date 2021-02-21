@@ -1,0 +1,75 @@
+---
+title: "loinc_01_NER.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(spacyr)
+library(solrium)
+library(dplyr)
+library(sparklyr)
+```
+
+## Get Documents From Solr
+
+All documents were indexed and loaded into an Apache Solr server.
+
+```{r}
+con <- SolrClient$new(host = "192.168.1.36")
+q <- "full_text:(comorbidity OR comorbid OR comorbidities)"
+res <- solr_search(con, "cord19", params =  list(q = q), rows=100)
+```
+
+## Do NER
+
+#### Model 1: en_ner_craft_md
+
+```{r}
+spacy_initialize("en_ner_craft_md")
+
+ner_craft <- spacy_extract_entity(res$full_text)
+saveRDS(ner_craft, "scratch/ner_craft.rds", compress=FALSE)
+
+spacy_finalize()
+```
+
+#### Model 2: en_ner_jnlpba_md
+
+```{r}
+spacy_initialize("en_ner_jnlpba_md")
+
+ner_jnlpba <- spacy_extract_entity(res$full_text)
+saveRDS(ner_jnlpba, "scratch/ner_jnlpba.rds", compress=FALSE)
+
+spacy_finalize()
+```
+
+
+#### Model 3: en_ner_bc5cdr_md
+
+```{r}
+spacy_initialize("en_ner_bc5cdr_md")
+
+ner_bc5cdr <- spacy_extract_entity(res$full_text)
+saveRDS(ner_bc5cdr, "scratch/ner_bc5cdr.rds", compress=FALSE)
+
+spacy_finalize()
+```
+
+
+#### Model 4: en_ner_bionlp13cg_md
+
+```{r}
+spacy_initialize("en_ner_bionlp13cg_md")
+
+ner_bionlp13cg <- spacy_extract_entity(res$full_text)
+saveRDS(ner_bionlp13cg_, "scratch/ner_bionlp13cg_.rds", compress=FALSE)
+
+spacy_finalize()
+```
+
+
