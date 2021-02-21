@@ -21,7 +21,7 @@ All documents were indexed and loaded into an Apache Solr server.
 ```{r}
 con <- SolrClient$new(host = "192.168.1.36")
 q <- "full_text:(comorbidity OR comorbid OR comorbidities)"
-res <- solr_search(con, "cord19", params =  list(q = q), rows=100)
+res <- solr_search(con, "cord19", params =  list(q = q), rows=80000)
 ```
 
 ## Do NER
