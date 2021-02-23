@@ -1,0 +1,22 @@
+---
+title: "loinc_01_annotate.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(clinspacy)
+```
+
+```{r}
+reticulate::use_conda("clinspacy")
+```
+
+```{r}
+clinspacy_init(use_linker = TRUE)
+clinspacy('This patient has diabetes and CKD stage 3 but no HTN.')
+```
+
