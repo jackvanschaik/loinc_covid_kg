@@ -17,6 +17,6 @@ reticulate::use_conda("clinspacy")
 
 ```{r}
 clinspacy_init(use_linker = TRUE)
-clinspacy('This patient has diabetes and CKD stage 3 but no HTN.')
+clinspacy('This patient has diabetes and CKD stage 3 but no HTN. ')
 ```
 
